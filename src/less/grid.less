@@ -1,0 +1,40 @@
+.generarColumnas(@prefix, @columns, @iteracion : 1) when (@iteracion =< @columns) {
+    @selector: ~'.col-@{prefix}@{iteracion}';
+    @ancho: (100% / @columns * @iteracion);
+
+    @{selector}{
+        flex-basis: @ancho;
+    }
+
+    .generarColumnas(@prefix, @columns, (@iteracion + 1));
+}
+
+.grid{
+    .row{
+        display: flex;
+        flex-wrap: wrap;
+        [class*="col-"] {
+            flex: 0, 0;
+            border: 1px solid darken(@primary-background-color, 30%);
+        }
+        
+        //Generar columnas para móviles
+        .generarColumnas('', 12);
+
+        //Generar columnas para tablets
+        @media(min-width: #break-points[tablet]){
+            .generarColumnas('md-', 12);
+        }
+
+        //Generar columnas para tablets
+        @media(min-width: #break-points[desktop]){
+            .generarColumnas('lg-', 12);
+        }
+
+        //Generar columnas para tablets
+        @media(min-width: #break-points[wide]){
+            .generarColumnas('xl-', 12);
+        }
+
+    }
+}
